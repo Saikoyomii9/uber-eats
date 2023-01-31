@@ -38,7 +38,7 @@ renderItem={(dishItem) => (
                 <h2 style={ styles.totalPrice}> ${total}</h2>
         </div>
                 <Divider />
-                <div style={ styles.buttonsContainer}></div>
+                <div style={ styles.buttonsContainer}>
                 <Button
                         block
                         danger
@@ -68,6 +68,7 @@ renderItem={(dishItem) => (
                 >
                         Food is Done
                         </Button>
+                        </div>
         
 
                 </Card>
