@@ -12,7 +12,7 @@ const Orders = () => {
                 DataStore.query(Order).then(setOrders);
         })
 
-        console.log(orders);
+        //console.log(orders);
 
         const navigate = useNavigate();
 

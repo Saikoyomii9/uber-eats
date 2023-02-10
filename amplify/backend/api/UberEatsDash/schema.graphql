@@ -35,7 +35,7 @@ type Dish @model @auth(rules: [{allow: public}]) {
   description: String!
   price: Float
   image: String
-  Restaurants: [Restaurant] @hasMany(indexName: "byDish", fields: ["id"])
+  restaurantID: ID! @index(name: "byRestaurant")
 }
 
 type Restaurant @model @auth(rules: [{allow: public}]) {
@@ -44,5 +44,6 @@ type Restaurant @model @auth(rules: [{allow: public}]) {
   address: String!
   image: String!
   adminSub: String
-  dishID: ID! @index(name: "byDish")
+  Dishes: [Dish] @hasMany(indexName: "byRestaurant", fields: ["id"])
 }
+ 

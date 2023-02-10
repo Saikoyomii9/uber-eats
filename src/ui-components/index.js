@@ -5,7 +5,7 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
-export { default as DishCreateForm } from "./DishCreateForm";
-export { default as DishUpdateForm } from "./DishUpdateForm";
+export { default as RestaurantCreateForm } from "./RestaurantCreateForm";
+export { default as RestaurantUpdateForm } from "./RestaurantUpdateForm";
 export { default as UserCreateForm } from "./UserCreateForm";
 export { default as UserUpdateForm } from "./UserUpdateForm";
