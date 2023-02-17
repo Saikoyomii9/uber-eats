@@ -1,8 +1,26 @@
+type NewRestaurant @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  address: String!
+  image: String!
+  adminSub: String
+  NewDishes: [NewDish] @hasMany(indexName: "byNewRestaurant", fields: ["id"])
+}
+
+type NewDish @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String!
+  image: String
+  price: Float!
+  newrestaurantID: ID! @index(name: "byNewRestaurant")
+}
+
 type OrderDish @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int!
   orderID: ID! @index(name: "byOrder")
-  Dish: Dish @hasOne
+  NewDish: NewDish @hasOne
 }
 
 enum OrderStatus {
@@ -17,8 +35,8 @@ type Order @model @auth(rules: [{allow: public}]) {
   total: Float!
   status: OrderStatus!
   userID: ID! @index(name: "byUser")
-  Restaurant: Restaurant @hasOne
   OrderDishes: [OrderDish] @hasMany(indexName: "byOrder", fields: ["id"])
+  NewRestaurant: NewRestaurant @hasOne
 }
 
 type User @model @auth(rules: [{allow: public}]) {
@@ -27,23 +45,5 @@ type User @model @auth(rules: [{allow: public}]) {
   address: String!
   sub: String!
   Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
-}
-
-type Dish @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String!
-  description: String!
-  price: Float
-  image: String
-  restaurantID: ID! @index(name: "byRestaurant")
-}
-
-type Restaurant @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String!
-  address: String!
-  image: String!
-  adminSub: String
-  Dishes: [Dish] @hasMany(indexName: "byRestaurant", fields: ["id"])
 }
  

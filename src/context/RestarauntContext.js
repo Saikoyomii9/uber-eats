@@ -1,39 +1,41 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Auth, DataStore } from "aws-amplify";
-import { Restaurant } from "../models";
+import { NewRestaurant } from "../models";
 
-const RestarauntContext = createContext();
+const RestaurantContext = createContext();
 
-const RestarauntContextProvider = ({children}) => {
+const RestaurantContextProvider = ({children}) => {
 
         const [user, setUser] = useState();
-        const [restaraunt, setRestaraunt] = useState();
-        const sub = user?.attribute?.sub;
+        const [restaurant, setRestaurant] = useState();
+        const sub = user?.attributes?.sub;
 
         useEffect(() => {
                 Auth.currentAuthenticatedUser({bypassCache: true}).then(setUser);
         }, []);
-        //console.log(user);
-        //console.log(sub);
+        console.log(user);
+        console.log(sub);
 
         useEffect(() => {
                 if(!sub){
                         return;
                 }
-                DataStore.query(Restaurant, (r) => r.adminSub.eq(sub)).then(
-                        (restaurants) => setRestaraunt(restaurants[0])
+                DataStore.query(NewRestaurant, (r) => r.adminSub.eq(sub)).then(
+                        (restaurants) => setRestaurant(restaurants[0])
                 );
         }, [sub])
 
-        console.log(restaraunt);
+        
+
+        console.log(restaurant);
 
         return(
-                <RestarauntContext.Provider value={{sub, restaraunt, setRestaraunt}}>
+                <RestaurantContext.Provider value={{sub, restaurant, setRestaurant}}>
                         {children}
-                </RestarauntContext.Provider>
+                </RestaurantContext.Provider>
         );
 };
 
-export default RestarauntContextProvider;
+export default RestaurantContextProvider;
 
-export const useRestaurantContext = () => useContext(RestarauntContext);
+export const useRestaurantContext = () => useContext(RestaurantContext);

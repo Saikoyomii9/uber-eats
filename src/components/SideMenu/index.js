@@ -5,11 +5,11 @@ import { useRestaurantContext } from "../../context/RestarauntContext";
 
 
 const SideMenu = () => {
-        
-        const navigate = useNavigate();
-        const {restaurant} = useRestaurantContext;
 
-        const menuItems = [
+        const navigate = useNavigate();
+        const { restaurant } = useRestaurantContext();
+
+        const mainMenuItems = [
                 {
                         key: '/',
                         label: 'Orders'
@@ -18,13 +18,18 @@ const SideMenu = () => {
                         key: 'menu',
                         label: 'Restaurant Menu'
                 },
+        ];
+
+
+        const menuItems = [
+                ...(restaurant ?mainMenuItems: []),
                 {
                         key: 'restaurant',
                         label: 'Create Restaurant'
                 },
                 {
                         key: 'signout',
-                        label: 'Sign Out'   
+                        label: 'Sign Out'
                 }
 
 
@@ -43,15 +48,15 @@ const SideMenu = () => {
         return (
 
                 <>
-                {restaurant && (<h2>{restaurant.name}</h2>)}
-                <Menu items={menuItems} onClick={onMenuItemClick}/>
+                        {restaurant && (<h2>{restaurant.name}</h2>)}
+                        <Menu items={menuItems} onClick={onMenuItemClick} />
                 </>
-                
+
 
 
         );
 
-       
+
 }
 
 export default SideMenu;

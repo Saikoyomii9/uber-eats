@@ -25,26 +25,26 @@ export default function RestaurantCreateForm(props) {
   const initialValues = {
     name: "",
     address: "",
-    image: "",
     adminSub: "",
+    image: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [address, setAddress] = React.useState(initialValues.address);
-  const [image, setImage] = React.useState(initialValues.image);
   const [adminSub, setAdminSub] = React.useState(initialValues.adminSub);
+  const [image, setImage] = React.useState(initialValues.image);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
     setAddress(initialValues.address);
-    setImage(initialValues.image);
     setAdminSub(initialValues.adminSub);
+    setImage(initialValues.image);
     setErrors({});
   };
   const validations = {
     name: [{ type: "Required" }],
     address: [{ type: "Required" }],
-    image: [{ type: "Required" }],
     adminSub: [],
+    image: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -73,8 +73,8 @@ export default function RestaurantCreateForm(props) {
         let modelFields = {
           name,
           address,
-          image,
           adminSub,
+          image,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -131,8 +131,8 @@ export default function RestaurantCreateForm(props) {
             const modelFields = {
               name: value,
               address,
-              image,
               adminSub,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -158,8 +158,8 @@ export default function RestaurantCreateForm(props) {
             const modelFields = {
               name,
               address: value,
-              image,
               adminSub,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -175,33 +175,6 @@ export default function RestaurantCreateForm(props) {
         {...getOverrideProps(overrides, "address")}
       ></TextField>
       <TextField
-        label="Image"
-        isRequired={true}
-        isReadOnly={false}
-        value={image}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              address,
-              image: value,
-              adminSub,
-            };
-            const result = onChange(modelFields);
-            value = result?.image ?? value;
-          }
-          if (errors.image?.hasError) {
-            runValidationTasks("image", value);
-          }
-          setImage(value);
-        }}
-        onBlur={() => runValidationTasks("image", image)}
-        errorMessage={errors.image?.errorMessage}
-        hasError={errors.image?.hasError}
-        {...getOverrideProps(overrides, "image")}
-      ></TextField>
-      <TextField
         label="Admin sub"
         isRequired={false}
         isReadOnly={false}
@@ -212,8 +185,8 @@ export default function RestaurantCreateForm(props) {
             const modelFields = {
               name,
               address,
-              image,
               adminSub: value,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.adminSub ?? value;
@@ -227,6 +200,33 @@ export default function RestaurantCreateForm(props) {
         errorMessage={errors.adminSub?.errorMessage}
         hasError={errors.adminSub?.hasError}
         {...getOverrideProps(overrides, "adminSub")}
+      ></TextField>
+      <TextField
+        label="Image"
+        isRequired={true}
+        isReadOnly={false}
+        value={image}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              address,
+              adminSub,
+              image: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.image ?? value;
+          }
+          if (errors.image?.hasError) {
+            runValidationTasks("image", value);
+          }
+          setImage(value);
+        }}
+        onBlur={() => runValidationTasks("image", image)}
+        errorMessage={errors.image?.errorMessage}
+        hasError={errors.image?.hasError}
+        {...getOverrideProps(overrides, "image")}
       ></TextField>
       <Flex
         justifyContent="space-between"

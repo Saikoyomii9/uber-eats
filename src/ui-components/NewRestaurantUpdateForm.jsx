@@ -8,13 +8,13 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Restaurant } from "../models";
+import { NewRestaurant } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function RestaurantUpdateForm(props) {
+export default function NewRestaurantUpdateForm(props) {
   const {
     id: idProp,
-    restaurant,
+    newRestaurant,
     onSuccess,
     onError,
     onSubmit,
@@ -26,40 +26,41 @@ export default function RestaurantUpdateForm(props) {
   const initialValues = {
     name: "",
     address: "",
-    adminSub: "",
     image: "",
+    adminSub: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [address, setAddress] = React.useState(initialValues.address);
-  const [adminSub, setAdminSub] = React.useState(initialValues.adminSub);
   const [image, setImage] = React.useState(initialValues.image);
+  const [adminSub, setAdminSub] = React.useState(initialValues.adminSub);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = restaurantRecord
-      ? { ...initialValues, ...restaurantRecord }
+    const cleanValues = newRestaurantRecord
+      ? { ...initialValues, ...newRestaurantRecord }
       : initialValues;
     setName(cleanValues.name);
     setAddress(cleanValues.address);
-    setAdminSub(cleanValues.adminSub);
     setImage(cleanValues.image);
+    setAdminSub(cleanValues.adminSub);
     setErrors({});
   };
-  const [restaurantRecord, setRestaurantRecord] = React.useState(restaurant);
+  const [newRestaurantRecord, setNewRestaurantRecord] =
+    React.useState(newRestaurant);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
-        ? await DataStore.query(Restaurant, idProp)
-        : restaurant;
-      setRestaurantRecord(record);
+        ? await DataStore.query(NewRestaurant, idProp)
+        : newRestaurant;
+      setNewRestaurantRecord(record);
     };
     queryData();
-  }, [idProp, restaurant]);
-  React.useEffect(resetStateValues, [restaurantRecord]);
+  }, [idProp, newRestaurant]);
+  React.useEffect(resetStateValues, [newRestaurantRecord]);
   const validations = {
     name: [{ type: "Required" }],
     address: [{ type: "Required" }],
-    adminSub: [],
     image: [{ type: "Required" }],
+    adminSub: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -88,8 +89,8 @@ export default function RestaurantUpdateForm(props) {
         let modelFields = {
           name,
           address,
-          adminSub,
           image,
+          adminSub,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -120,7 +121,7 @@ export default function RestaurantUpdateForm(props) {
             }
           });
           await DataStore.save(
-            Restaurant.copyOf(restaurantRecord, (updated) => {
+            NewRestaurant.copyOf(newRestaurantRecord, (updated) => {
               Object.assign(updated, modelFields);
             })
           );
@@ -133,7 +134,7 @@ export default function RestaurantUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "RestaurantUpdateForm")}
+      {...getOverrideProps(overrides, "NewRestaurantUpdateForm")}
       {...rest}
     >
       <TextField
@@ -147,8 +148,8 @@ export default function RestaurantUpdateForm(props) {
             const modelFields = {
               name: value,
               address,
-              adminSub,
               image,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -174,8 +175,8 @@ export default function RestaurantUpdateForm(props) {
             const modelFields = {
               name,
               address: value,
-              adminSub,
               image,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -191,33 +192,6 @@ export default function RestaurantUpdateForm(props) {
         {...getOverrideProps(overrides, "address")}
       ></TextField>
       <TextField
-        label="Admin sub"
-        isRequired={false}
-        isReadOnly={false}
-        value={adminSub}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              address,
-              adminSub: value,
-              image,
-            };
-            const result = onChange(modelFields);
-            value = result?.adminSub ?? value;
-          }
-          if (errors.adminSub?.hasError) {
-            runValidationTasks("adminSub", value);
-          }
-          setAdminSub(value);
-        }}
-        onBlur={() => runValidationTasks("adminSub", adminSub)}
-        errorMessage={errors.adminSub?.errorMessage}
-        hasError={errors.adminSub?.hasError}
-        {...getOverrideProps(overrides, "adminSub")}
-      ></TextField>
-      <TextField
         label="Image"
         isRequired={true}
         isReadOnly={false}
@@ -228,8 +202,8 @@ export default function RestaurantUpdateForm(props) {
             const modelFields = {
               name,
               address,
-              adminSub,
               image: value,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.image ?? value;
@@ -244,6 +218,33 @@ export default function RestaurantUpdateForm(props) {
         hasError={errors.image?.hasError}
         {...getOverrideProps(overrides, "image")}
       ></TextField>
+      <TextField
+        label="Admin sub"
+        isRequired={false}
+        isReadOnly={false}
+        value={adminSub}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              address,
+              image,
+              adminSub: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.adminSub ?? value;
+          }
+          if (errors.adminSub?.hasError) {
+            runValidationTasks("adminSub", value);
+          }
+          setAdminSub(value);
+        }}
+        onBlur={() => runValidationTasks("adminSub", adminSub)}
+        errorMessage={errors.adminSub?.errorMessage}
+        hasError={errors.adminSub?.hasError}
+        {...getOverrideProps(overrides, "adminSub")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -255,7 +256,7 @@ export default function RestaurantUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || restaurant)}
+          isDisabled={!(idProp || newRestaurant)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -267,7 +268,7 @@ export default function RestaurantUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || restaurant) ||
+              !(idProp || newRestaurant) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

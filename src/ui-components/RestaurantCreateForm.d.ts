@@ -15,22 +15,22 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type RestaurantCreateFormInputValues = {
     name?: string;
     address?: string;
-    image?: string;
     adminSub?: string;
+    image?: string;
 };
 export declare type RestaurantCreateFormValidationValues = {
     name?: ValidationFunction<string>;
     address?: ValidationFunction<string>;
-    image?: ValidationFunction<string>;
     adminSub?: ValidationFunction<string>;
+    image?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type RestaurantCreateFormOverridesProps = {
     RestaurantCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     address?: PrimitiveOverrideProps<TextFieldProps>;
-    image?: PrimitiveOverrideProps<TextFieldProps>;
     adminSub?: PrimitiveOverrideProps<TextFieldProps>;
+    image?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type RestaurantCreateFormProps = React.PropsWithChildren<{
     overrides?: RestaurantCreateFormOverridesProps | undefined | null;
