@@ -14,12 +14,15 @@ const Orders = () => {
                 if(!restaurant) {
                         return;
                 }
-                DataStore.query(Order, (order) =>
-                order.orderNewRestaurantId.eq(restaurant.id)).then(setOrders);
+                DataStore.query(Order, 
+                        (order) => order.orderNewRestaurantId.eq(restaurant.id)).
+                        then(setOrders);
         }, [restaurant]);
+        
 
 
         //console.log(orders);
+
 
         const navigate = useNavigate();
 
